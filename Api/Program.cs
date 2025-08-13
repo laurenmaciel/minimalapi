@@ -1,11 +1,16 @@
-using MinimalApi;
+namespace MinimalApi;
 
-IHostBuilder CreateHostBuilder(string[] args){
-  return Host.CreateDefaultBuilder(args)
-    .ConfigureWebHostDefaults(webBuilder =>
+public class Program
+{
+    public static void Main(string[] args)
     {
-        webBuilder.UseStartup<Startup>();
-    });
-}
+        CreateHostBuilder(args).Build().Run();
+    }
 
-CreateHostBuilder(args).Build().Run();
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            });
+}

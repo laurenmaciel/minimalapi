@@ -15,14 +15,20 @@ public class AdministradorServicoTest
         var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         var path = Path.GetFullPath(Path.Combine(assemblyPath ?? "", "..", "..", ".."));
 
-        var builder = new ConfigurationBuilder()
+        var configuration = new ConfigurationBuilder()
             .SetBasePath(path ?? Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddEnvironmentVariables();
+            .AddEnvironmentVariables()
+            .Build();
 
-        var configuration = builder.Build();
+        var options = new DbContextOptionsBuilder<DbContexto>()
+            .UseMySql(
+                configuration.GetConnectionString("MySqlTest"),
+                ServerVersion.AutoDetect(configuration.GetConnectionString("MySqlTest"))
+            )
+            .Options;
 
-        return new DbContexto(configuration);
+        return new DbContexto(options);
     }
 
 
